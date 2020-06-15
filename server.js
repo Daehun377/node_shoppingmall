@@ -2,6 +2,7 @@
 
 const express = require("express");
 const morgan = require("morgan");
+const bodyParser = require("body-parser");
 
 
 
@@ -20,6 +21,8 @@ const orderRoute = require("./routes/orders");
 
 // 미들 웨어
 app.use(morgan("dev"));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended : false}));
 
 
 // 라우팅

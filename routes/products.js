@@ -4,8 +4,16 @@ const router = express.Router();
 
 // product create
 router.post("/" , (req, res) => {
+
+    const product = {
+      name : req.body.namelabel,
+      price : req.body.pricelabel
+    };
+
+
     res.json({
-        message : "product create"
+        message : "product create",
+        productInfo : product
     });
 });
 
