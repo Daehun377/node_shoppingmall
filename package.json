@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Daehun377/node_shoppingmall/issues"
   },
-  "homepage": "https://github.com/Daehun377/node_shoppingmall#readme"
+  "homepage": "https://github.com/Daehun377/node_shoppingmall#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
