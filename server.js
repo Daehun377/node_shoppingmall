@@ -5,13 +5,15 @@ const app = express(); // express 내에 있는 많은 함수들중에서 어떤
 
 
 
-app.use((req, res) => {
-    res.json({
-        message : "It works!"
-    });
-});
+const productRoute = require("./routes/products");
 
+// app.use((req, res) => {
+//     res.json({
+//         message : "It works!"
+//     });
+// });
 
+app.use("/product", productRoute);
 
 
 
