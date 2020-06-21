@@ -100,9 +100,26 @@ router.patch("/", (req,res) => {
     });
 });
 
-//product delete
-router.delete("/", (req, res) =>{
-    
+//product detail delete
+router.delete("/:productid", (req, res) =>{
+
+    const id = req.params.productid;
+
+    productModel
+        .deleteOne({_id:id})
+        .then(result => {
+            //console.log(result) 이렇게 console로 찍어보면 어떤 값이 나오는지 알 수 있음. 
+            res.json({
+                message : "successful deleted product",
+                result : result
+            })
+        })
+        .catch(err => {
+            res.json({
+                error : err.message
+            })
+        });
+
 });
 
 
