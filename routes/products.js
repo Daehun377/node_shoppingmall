@@ -34,11 +34,26 @@ router.post("/" , (req, res) => {
     // });
 });
 
-//product retrieve
+//product total retrieve
 router.get("/", (req, res) => {
-    res.json({
-        message : "product retrieve"
-    });
+
+    productModel
+        .find()
+        .then(docs => {
+            res.json({
+                message : "sucessful getData",
+                count : docs.length,
+                products : docs
+            })
+        })
+        .catch(err => {
+            res.json({
+                error : err.message
+            });
+        });
+    // res.json({
+    //     message : "product retrieve"
+    // });
 });
 
 //product update
