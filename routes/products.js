@@ -18,7 +18,15 @@ router.post("/" , (req, res) => {
         .then(result => {
             res.json({
                 message : "successful saved",
-                productInfo : result
+                productInfo : {
+                    id : result._id,
+                    name : result.name,
+                    price : result.price,
+                    request : {
+                        type : "GET",
+                        url : "http://localhost:3000/product/" + result._id
+                    }
+                }
             });
         })
         .catch(err => {
@@ -43,11 +51,29 @@ router.get("/", (req, res) => {
     productModel
         .find()
         .then(docs => {
-            res.json({
-                message : "sucessful getData",
+            const response = {
                 count : docs.length,
-                products : docs
-            })
+                products : docs.map(doc => {
+                    return{
+                        id : doc._id,
+                        name : doc.name,
+                        price : doc.price,
+                        request : {
+                            type : "GET",
+                            url : "http://localhost:3000/product/" + doc._id
+                        }
+
+                    }
+                })
+            }
+            res.json(response)
+
+
+            // res.json({
+            //     message : "sucessful getData",
+            //     count : docs.length,
+            //     products : docs
+            // })
         })
         .catch(err => {
             res.json({
@@ -71,7 +97,15 @@ router.get("/:productid", (req, res) => {
             if(doc){
                 return res.status(200).json({
                     message : "succesful detail product",
-                    productInfo : doc
+                    productInfo : {
+                        id : doc._id,
+                        name : doc.name,
+                        price : doc.price,
+                        request : {
+                            type : "GET",
+                            url :"http://localhost:3000/product"
+                        }
+                    }
                 });
             }
             else{
@@ -110,7 +144,10 @@ router.patch("/:productid", (req,res) => {
         .then(result => {
             res.status(200).json({
                 message : "updated product",
-                updateProduct : result
+                request : {
+                    type : "GET",
+                    url : "http://localhost:3000/product/" + id
+                }
             });
         })
         .catch(err => {
@@ -133,8 +170,12 @@ router.delete("/:productid", (req, res) =>{
         .then(() => {
             //console.log(result) 이렇게 console로 찍어보면 어떤 값이 나오는지 알 수 있음.
             res.json({
-                message : "successful deleted product"
-                // result : result
+                message : "successful deleted product",
+                request :{
+                    type : "GET",
+                    url : "http://localhost:3000/product/"
+                }
+
             })
         })
         .catch(err => {
