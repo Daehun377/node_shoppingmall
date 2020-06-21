@@ -1,36 +1,50 @@
 const express = require("express");
 const router = express.Router();
 const orderModel = require("../models/order");
+const productModel = require("../models/product");
 
 //order create
 router.post("/", (req, res) => {
 
-    const order = new orderModel({
-        product : req.body.productId,
-        quantity : req.body.qty
-    });
+    productModel
+        .findById(req.body.productId)
+        .then(product => {
 
-    order
-        .save()
-        .then(result => {
-            res.json({
-                message : "successful order saved",
-                orderInfo : {
-                    id: result._id,
-                    product : result.product,
-                    quantity : result.quantity,
-                    request : {
-                        type : "GET",
-                        url : "http://localhost:3000/order/" + result._id
-                    }
-                }
-            })
+            const order = new orderModel({
+                product : req.body.productId,
+                quantity : req.body.qty
+            });
+
+            order
+                .save()
+                .then(result => {
+                    res.json({
+                        message : "successful order saved",
+                        orderInfo : {
+                            id: result._id,
+                            product : result.product,
+                            quantity : result.quantity,
+                            request : {
+                                type : "GET",
+                                url : "http://localhost:3000/order/" + result._id
+                            }
+                        }
+                    })
+                })
+                .catch(err => {
+                    res.json({
+                        error : err.message
+                    });
+                });
         })
         .catch(err => {
             res.json({
-                error : err.message
+                error : "prodcut not found"
             });
         });
+
+
+
 
     // res.json({
     //     message : "order create"
