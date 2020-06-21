@@ -34,6 +34,9 @@ router.post("/" , (req, res) => {
     // });
 });
 
+
+
+
 //product total retrieve
 router.get("/", (req, res) => {
 
@@ -56,6 +59,40 @@ router.get("/", (req, res) => {
     // });
 });
 
+
+//product detail get
+router.get("/:productid", (req, res) => {
+
+    const id = req.params.productid;
+
+    productModel
+        .findById(id)
+        .then(doc => {
+            if(doc){
+                return res.status(200).json({
+                    message : "succesful detail product",
+                    productInfo : doc
+                });
+            }
+            else{
+                res.status(404).json({
+                    message : "product not found"
+                })
+            }
+        })
+        .catch(err => {
+            res.json({
+                error : err.message
+            });
+        });
+
+});
+
+
+
+
+
+
 //product update
 router.patch("/", (req,res) => {
     res.json({
@@ -65,9 +102,7 @@ router.patch("/", (req,res) => {
 
 //product delete
 router.delete("/", (req, res) =>{
-    res.json({
-        message : "product delete"
-    });
+    
 });
 
 
