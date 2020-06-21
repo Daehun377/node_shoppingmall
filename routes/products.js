@@ -108,17 +108,17 @@ router.get("/:productid", (req, res) => {
                     }
                 });
             }
-            else{
-                res.status(404).json({
-                    message : "product not found"
-                })
-            }
+            // else{
+            //     res.status(404).json({
+            //         message : "product not found"
+            //     })
+            // }
         })
         .catch(err => {
             res.json({
                 error : err.message
             });
-        });
+        }); //밑에 있는게 더 우선시 됨으로, CATCH 의 메세지가 뜬다. catch는 무조건 있어야 함.
 
 });
 
