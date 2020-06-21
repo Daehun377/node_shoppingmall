@@ -53,10 +53,43 @@ router.post("/", (req, res) => {
 
 //order retrieve
 router.get("/", (req, res) => {
-    res.json({
-        message : "order retrieve"
-    });
+    orderModel
+        .find()
+        .populate("product", "name price")
+        .then(docs => {
+            const response = {
+                count : docs.length,
+                orders : docs.map(doc => {
+                    return{
+                        id : doc._id,
+                        product : doc.product,
+                        quantity : doc.quantity,
+                        request : {
+                            type : "GET",
+                            url : "http://localhost:3000/order/" + doc._id
+                        }
+                    }
+                })
+            }
+            res.json(response)
+        })
+        .catch(err => {
+            res.json({
+                error : err.message
+            });
+        });
+    // res.json({
+    //     message : "order retrieve"
+    // });
 });
+
+
+
+// order detail data get
+
+
+
+
 
 //order update
 router.put("/", (req,res) => {
