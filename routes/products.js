@@ -94,10 +94,33 @@ router.get("/:productid", (req, res) => {
 
 
 //product update
-router.patch("/", (req,res) => {
-    res.json({
-        message : "product update"
-    });
+router.patch("/:productid", (req,res) => {
+
+    const id = req.params.productid;
+
+    // update 할 내용 정의
+    const updateOps = {};
+    for(const ops of req.body){
+        updateOps[ops.propName] = ops.value;
+    }
+
+
+    productModel
+        .updateOne({_id:id}, {$set:updateOps})
+        .then(result => {
+            res.status(200).json({
+                message : "updated product",
+                updateProduct : result
+            });
+        })
+        .catch(err => {
+            res.json({
+                error : err.message
+            });
+        });
+    // res.json({
+    //     message : "product update"
+    // });
 });
 
 //product detail delete
@@ -107,11 +130,11 @@ router.delete("/:productid", (req, res) =>{
 
     productModel
         .deleteOne({_id:id})
-        .then(result => {
-            //console.log(result) 이렇게 console로 찍어보면 어떤 값이 나오는지 알 수 있음. 
+        .then(() => {
+            //console.log(result) 이렇게 console로 찍어보면 어떤 값이 나오는지 알 수 있음.
             res.json({
-                message : "successful deleted product",
-                result : result
+                message : "successful deleted product"
+                // result : result
             })
         })
         .catch(err => {
