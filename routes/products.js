@@ -1,20 +1,37 @@
 const express = require("express");
 const router = express.Router();
-
+const productModel = require("../models/product");
 
 // product create
 router.post("/" , (req, res) => {
 
-    const product = {
+
+
+    const product = new productModel({
       name : req.body.namelabel,
       price : req.body.pricelabel
-    };
-
-
-    res.json({
-        message : "product create",
-        productInfo : product
     });
+
+
+    product
+        .save()
+        .then(result => {
+            res.json({
+                message : "successful saved",
+                productInfo : result
+            });
+        })
+        .catch(err => {
+            res.json({
+                error : err.message
+            });
+        });
+    //
+    //
+    // res.json({
+    //     message : "product create",
+    //     productInfo : product
+    // });
 });
 
 //product retrieve
