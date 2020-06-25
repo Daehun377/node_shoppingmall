@@ -5,12 +5,12 @@ const productModel = require("../models/product");
 // product create
 router.post("/" , (req, res) => {
 
-
-
+    //모델의 새로운 instance 객체를 만들어 저장하는 법
     const product = new productModel({
       name : req.body.namelabel,
       price : req.body.pricelabel
     });
+
 
 
     product
@@ -27,7 +27,7 @@ router.post("/" , (req, res) => {
                         url : "http://localhost:3000/product/" + result._id
                     }
                 }
-            });
+            }, console.log(result)); //result 확인 해보기 위해
         })
         .catch(err => {
             res.json({
@@ -95,8 +95,8 @@ router.get("/:productid", (req, res) => {
         .findById(id)
         .then(doc => {
             if(doc){
-                return res.status(200).json({
-                    message : "succesful detail product",
+               return res.status(200).json({
+                    message : "successful detail product",
                     productInfo : {
                         id : doc._id,
                         name : doc.name,
@@ -141,7 +141,7 @@ router.patch("/:productid", (req,res) => {
 
     productModel
         .updateOne({_id:id}, {$set:updateOps})
-        .then(result => {
+        .then(() => {
             res.status(200).json({
                 message : "updated product",
                 request : {
@@ -176,7 +176,7 @@ router.delete("/:productid", (req, res) =>{
                     url : "http://localhost:3000/product/"
                 }
 
-            })
+            });
         })
         .catch(err => {
             res.json({

@@ -39,7 +39,7 @@ router.post("/", (req, res) => {
         })
         .catch(err => {
             res.json({
-                error : "prodcut not found"
+                error : "product not found"
             });
         });
 
@@ -51,8 +51,9 @@ router.post("/", (req, res) => {
     // });
 });
 
-//order retrieve
+//order total retrieve
 router.get("/", (req, res) => {
+
     orderModel
         .find()
         .populate("product", "name price")
@@ -86,7 +87,38 @@ router.get("/", (req, res) => {
 
 
 // order detail data get
+router.get("/:orderid", (req, res) => {
 
+    const id = req.params.orderid;
+
+    console.log(id);
+
+    orderModel
+        .findById(id)
+        .populate("product", "name price")
+        .then(doc => {
+            console.log(doc)
+            if(doc){
+                return res.status(200).json({
+                    message : "successful detail order",
+                    orderInfo : {
+                        id : doc._id,
+                        product : doc.product,
+                        quantity: doc.quantity,
+                        request : {
+                            type : "GET",
+                            url : "http://localhost:3000/order"
+                        }
+                    }
+                });
+            }
+        })
+        .catch(err => {
+            res.json({
+                error : err.message
+            });
+        });
+});
 
 
 
