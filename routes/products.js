@@ -187,6 +187,4 @@ router.delete("/:productid", (req, res) =>{
 });
 
 
-
-
 module.exports = router;

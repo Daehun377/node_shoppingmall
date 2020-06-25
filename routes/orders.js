@@ -131,10 +131,29 @@ router.put("/", (req,res) => {
 });
 
 //order delete
-router.delete("/", (req,res) => {
-    res.json({
-        message : "order delete"
-    });
+router.delete("/:orderid", (req,res) => {
+
+    const id = req.params.orderid;
+
+    orderModel
+        .deleteOne({_id:id})
+        .then(() => {
+            res.json({
+                message : "successful deleted order",
+                request : {
+                    type : "GET",
+                    url : "http://localhost:3000/order/"
+                }
+            });
+        })
+        .catch(err => {
+            res.json({
+                error : err.message
+            })
+        });
+    // res.json({
+    //     message : "order delete"
+    // });
 });
 
 module.exports = router;
