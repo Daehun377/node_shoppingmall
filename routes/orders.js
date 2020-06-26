@@ -124,14 +124,39 @@ router.get("/:orderid", (req, res) => {
 
 
 //order update
-router.put("/", (req,res) => {
-    res.json({
-        message : "order update"
-    });
+router.put("/:orderid", (req, res) => {
+
+    const id = req.params.orderid;
+
+    //업데이트 내용 정의
+    const updateOps = {};
+    for(const ops of req.body){
+        updateOps[ops.propName] = ops.value;
+    }
+
+    orderModel
+        .updateOne({_id:id}, {$set:updateOps})
+        .then(() => {
+            res.status(200).json({
+                message : "updated order",
+                request : {
+                    type : "GET",
+                    url : "http://localhost:3000/order/"+ id
+                }
+            });
+        })
+        .catch(err => {
+            res.json({
+                error : err.message
+            });
+        })
+    // res.json({
+    //     message : "order update"
+    // });
 });
 
 //order delete
-router.delete("/:orderid", (req,res) => {
+router.delete("/:orderid", (req, res) => {
 
     const id = req.params.orderid;
 
