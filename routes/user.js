@@ -9,7 +9,7 @@ const userModel = require("../models/user");
 
 router.post("/register", (req, res) => {
 
-    // 이메일 유무 체크 -> 패스워드 암호화 -> 유저 데이터 베이스 생성
+    // 이메일 유무 체크 -> 패스 워드 암호화 -> 유저 데이터 베이스 생성
 
     userModel
         .findOne({email:req.body.email})
@@ -60,12 +60,6 @@ router.post("/register", (req, res) => {
                 message : err.message
             });
         });
-
-
-
-
-
-
 });
 
 
