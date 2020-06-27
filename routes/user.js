@@ -9,39 +9,60 @@ const userModel = require("../models/user");
 
 router.post("/register", (req, res) => {
 
-    bcrypt.hash(req.body.password, 10, (err, hash) => {
+    // 이메일 유무 체크 -> 패스워드 암호화 -> 유저 데이터 베이스 생성
 
-        if(err){
-            return res.json({
-                error : err.message
-            })
-        }
-        else{
-            const user = new userModel({
-                email : req.body.email,
-                password : hash
-            })
-
-            user
-                .save()
-                .then(user => {
-                    res.json({
-                        message : "successful signup",
-                        userInfo : {
-                            id : user._id,
-                            email : user.email,
-                            password : user.password
-                        }
-                    })
-                })
-                .catch(err => {
-                    res.json({
-                        message : err.message
-                    });
+    userModel
+        .findOne({email:req.body.email})
+        .then(user => {
+            if(user){
+                return res.json({
+                    message : "email exists"
                 });
+            }
+            else{
+                bcrypt.hash(req.body.password, 10, (err, hash) => {
 
-        }
-    })
+                    if(err){
+                        return res.json({
+                            error : err.message
+                        })
+                    }
+                    else{
+                        const user = new userModel({
+                            email : req.body.email,
+                            password : hash
+                        })
+
+                        user
+                            .save()
+                            .then(user => {
+                                res.json({
+                                    message : "successful signup",
+                                    userInfo : {
+                                        id : user._id,
+                                        email : user.email,
+                                        password : user.password
+                                    }
+                                })
+                            })
+                            .catch(err => {
+                                res.json({
+                                    message : err.message
+                                });
+                            });
+
+                    }
+                })
+            }
+        })
+        .catch(err => {
+            res.json({
+                message : err.message
+            });
+        });
+
+
+
 
 
 
