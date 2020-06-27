@@ -67,7 +67,43 @@ router.post("/register", (req, res) => {
 
 router.post("/login", (req, res) => {
 
+    // 이메일 유무 체크 -> 패스 워드 매칭 -> 성공 메세지
+
+    userModel
+        .findOne({email : req.body.email})
+        .then(user => {
+            if(!user){
+                return res.json({
+                    message : "no email"
+                });
+            }
+            else{
+                bcrypt.compare(req.body.password, user.password, (err, isMatch) => {
+
+                    if(err || isMatch === false){
+                        return res.json({
+                            message : "password incorrect"
+                        })
+                    }
+                    else{
+                        res.json({
+                            message : "successful login"
+                        })
+                    }
+                })
+            }
+        })
+        .catch(err => {
+            res.json({
+                message : err.message
+            });
+        });
+
+
+
 })
+
+
 
 
 
