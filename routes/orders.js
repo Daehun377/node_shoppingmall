@@ -162,7 +162,7 @@ router.delete("/:orderid", (req, res) => {
 
     orderModel
         .deleteOne({_id:id})
-        .then(() => {
+        .then(() => { 
             res.json({
                 message : "successful deleted order",
                 request : {

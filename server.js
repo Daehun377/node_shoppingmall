@@ -24,6 +24,7 @@ mongoose.connect(db, {useNewUrlParser : true,  useUnifiedTopology: true})
 // 라우팅 루트
 const productRoute = require("./routes/products");
 const orderRoute = require("./routes/orders");
+const userRoute = require("./routes/user");
 
 // 미들 웨어
 app.use(morgan("dev"));
@@ -34,6 +35,7 @@ app.use(bodyParser.urlencoded({extended : false}));
 // 라우팅
 app.use("/product", productRoute);
 app.use("/order", orderRoute);
+app.use("/user", userRoute);
 
 const PORT = 3000;
 

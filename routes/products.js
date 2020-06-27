@@ -62,7 +62,6 @@ router.get("/", (req, res) => {
                             type : "GET",
                             url : "http://localhost:3000/product/" + doc._id
                         }
-
                     }
                 })
             }
