@@ -1,34 +1,49 @@
 // 1
 const express = require("express");
 const router = express.Router();
+const bcrypt = require("bcryptjs");
 const userModel = require("../models/user");
+
 
 // 회원 가입
 
 router.post("/register", (req, res) => {
 
-    const user = new userModel({
-        email : req.body.email,
-        password : req.body.password
+    bcrypt.hash(req.body.password, 10, (err, hash) => {
+
+        if(err){
+            return res.json({
+                error : err.message
+            })
+        }
+        else{
+            const user = new userModel({
+                email : req.body.email,
+                password : hash
+            })
+
+            user
+                .save()
+                .then(user => {
+                    res.json({
+                        message : "successful signup",
+                        userInfo : {
+                            id : user._id,
+                            email : user.email,
+                            password : user.password
+                        }
+                    })
+                })
+                .catch(err => {
+                    res.json({
+                        message : err.message
+                    });
+                });
+
+        }
     })
 
-    user
-        .save()
-        .then(user => {
-            res.json({
-                message : "successful signup",
-                userInfo : {
-                    id : user._id,
-                    email : user.email,
-                    password : user.password
-                }
-            })
-        })
-        .catch(err => {
-            res.json({
-                message : err.message
-            });
-        });
+
 
 });
 
