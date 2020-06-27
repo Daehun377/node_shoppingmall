@@ -2,6 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const userModel = require("../models/user");
 
 
@@ -67,7 +68,7 @@ router.post("/register", (req, res) => {
 
 router.post("/login", (req, res) => {
 
-    // 이메일 유무 체크 -> 패스 워드 매칭 -> 성공 메세지
+    // 이메일 유무 체크 -> 패스 워드 매칭 -> 성공 메세지, 토큰을 반환 ( 사용자 정보를 암호화한것 )
 
     userModel
         .findOne({email : req.body.email})
@@ -78,6 +79,7 @@ router.post("/login", (req, res) => {
                 });
             }
             else{
+
                 bcrypt.compare(req.body.password, user.password, (err, isMatch) => {
 
                     if(err || isMatch === false){
@@ -86,8 +88,17 @@ router.post("/login", (req, res) => {
                         })
                     }
                     else{
+
+                        // 토큰 생성
+                        const token = jwt.sign(
+                            {id : user._id, email : user.email},
+                            "secretToken",
+                            {expiresIn: "1h"}
+                        );
+
                         res.json({
-                            message : "successful login"
+                            message : "successful login",
+                            tokenInfo : token
                         })
                     }
                 })
