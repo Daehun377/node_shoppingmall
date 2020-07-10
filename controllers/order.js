@@ -36,13 +36,14 @@ exports.orders_get_all = (req, res) => {
 
 exports.orders_register_order = (req, res) => {
 
+    const { product, quantity } = req.body;
+
     productModel
-        .findById(req.body.productId)
+        .findById(product)
         .then(product => {
 
             const order = new orderModel({
-                product : req.body.productId,
-                quantity : req.body.qty
+                product, quantity
             });
 
             order

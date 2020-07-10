@@ -7,8 +7,9 @@ exports.user_register =  (req, res) => {
 
     // 이메일 유무 체크 -> 패스 워드 암호화 -> 유저 데이터 베이스 생성
 
+    const {email, password} = req.body;
     userModel
-        .findOne({email:req.body.email})
+        .findOne({email})
         .then(user => {
             if(user){
                 return res.json({
@@ -16,7 +17,7 @@ exports.user_register =  (req, res) => {
                 });
             }
             else{
-                bcrypt.hash(req.body.password, 10, (err, hash) => {
+                bcrypt.hash(password, 10, (err, hash) => {
 
                     if(err){
                         return res.json({
@@ -25,7 +26,7 @@ exports.user_register =  (req, res) => {
                     }
                     else{
                         const user = new userModel({
-                            email : req.body.email,
+                            email,
                             password : hash
                         })
 
@@ -62,8 +63,10 @@ exports.user_login =  (req, res) => {
 
     // 이메일 유무 체크 -> 패스 워드 매칭 -> 성공 메세지, 토큰을 반환 ( 사용자 정보를 암호화 한것 )
 
+    const {email, password} = req.body;
+
     userModel
-        .findOne({email : req.body.email})
+        .findOne({email})
         .then(user => {
             if(!user){
                 return res.json({
@@ -72,7 +75,7 @@ exports.user_login =  (req, res) => {
             }
             else{
 
-                bcrypt.compare(req.body.password, user.password, (err, isMatch) => {
+                bcrypt.compare(password, user.password, (err, isMatch) => {
 
                     if(err || isMatch === false){
                         return res.json({

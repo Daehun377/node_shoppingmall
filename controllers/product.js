@@ -8,10 +8,12 @@ const productModel = require("../models/product");
 
 exports.products_register_product = (req, res) => {
 
+    const {name, price} = req.body;
+
+
     //모델의 새로운 instance 객체를 만들어 저장하는 법
     const product = new productModel({
-        name : req.body.namelabel,
-        price : req.body.pricelabel
+        name, price
     });
 
 
