@@ -68,7 +68,7 @@ router.post("/register", (req, res) => {
 
 router.post("/login", (req, res) => {
 
-    // 이메일 유무 체크 -> 패스 워드 매칭 -> 성공 메세지, 토큰을 반환 ( 사용자 정보를 암호화한것 )
+    // 이메일 유무 체크 -> 패스 워드 매칭 -> 성공 메세지, 토큰을 반환 ( 사용자 정보를 암호화 한것 )
 
     userModel
         .findOne({email : req.body.email})
@@ -92,7 +92,7 @@ router.post("/login", (req, res) => {
                         // 토큰 생성
                         const token = jwt.sign(
                             {id : user._id, email : user.email},
-                            "secretToken",
+                            "secretToken", //임의로 정해주는 것
                             {expiresIn: "1h"}
                         );
 
