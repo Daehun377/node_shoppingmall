@@ -14,7 +14,7 @@ const app = express(); // express 내에 있는 많은 함수들중에서 어떤
 
 const db = "mongodb+srv://daehunkim:1650@cluster0-v8kmp.mongodb.net/shoppingmall?retryWrites=true&w=majority";
 
-mongoose.connect(db, {useNewUrlParser : true,  useUnifiedTopology: true})
+mongoose.connect(db, {useNewUrlParser : true,  useUnifiedTopology: true, useCreateIndex : true})
     .then(() => console.log("MongoDB connected"))
     .catch(err => console.log(err.message));
 

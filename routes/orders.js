@@ -2,9 +2,10 @@ const express = require("express");
 const router = express.Router();
 const orderModel = require("../models/order");
 const productModel = require("../models/product");
+const checkAuth = require("../config/check-auth");
 
 //order create
-router.post("/", (req, res) => {
+router.post("/", checkAuth, (req, res) => {
 
     productModel
         .findById(req.body.productId)
@@ -52,7 +53,7 @@ router.post("/", (req, res) => {
 });
 
 //order total retrieve
-router.get("/", (req, res) => {
+router.get("/", checkAuth, (req, res) => {
 
     orderModel
         .find()
@@ -87,7 +88,7 @@ router.get("/", (req, res) => {
 
 
 // order detail data get
-router.get("/:orderid", (req, res) => {
+router.get("/:orderid", checkAuth, (req, res) => {
 
     const id = req.params.orderid;
 
@@ -124,7 +125,7 @@ router.get("/:orderid", (req, res) => {
 
 
 //order update
-router.put("/:orderid", (req, res) => {
+router.put("/:orderid", checkAuth, (req, res) => {
 
     const id = req.params.orderid;
 
@@ -156,7 +157,7 @@ router.put("/:orderid", (req, res) => {
 });
 
 //order delete
-router.delete("/:orderid", (req, res) => {
+router.delete("/:orderid", checkAuth, (req, res) => {
 
     const id = req.params.orderid;
 

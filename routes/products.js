@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const productModel = require("../models/product");
+const checkAuth = require("../config/check-auth");
 
 // product create
-router.post("/" , (req, res) => {
+router.post("/" , checkAuth, (req, res) => {
 
     //모델의 새로운 instance 객체를 만들어 저장하는 법
     const product = new productModel({
@@ -27,7 +28,7 @@ router.post("/" , (req, res) => {
                         url : "http://localhost:3000/product/" + result._id
                     }
                 }
-            }, console.log(result)); //result 확인 해보기 위해
+            });
         })
         .catch(err => {
             res.json({
@@ -86,7 +87,7 @@ router.get("/", (req, res) => {
 
 
 //product detail get
-router.get("/:productid", (req, res) => {
+router.get("/:productid", checkAuth, (req, res) => {
 
     const id = req.params.productid;
 
@@ -127,7 +128,7 @@ router.get("/:productid", (req, res) => {
 
 
 //product update
-router.patch("/:productid", (req,res) => {
+router.patch("/:productid", checkAuth, (req,res) => {
 
     const id = req.params.productid;
 
@@ -160,7 +161,7 @@ router.patch("/:productid", (req,res) => {
 });
 
 //product detail delete
-router.delete("/:productid", (req, res) =>{
+router.delete("/:productid", checkAuth, (req, res) =>{
 
     const id = req.params.productid;
 
