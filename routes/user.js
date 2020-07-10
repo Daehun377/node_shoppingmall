@@ -92,7 +92,7 @@ router.post("/login", (req, res) => {
                         // 토큰 생성
                         const token = jwt.sign(
                             {id : user._id, email : user.email},
-                            "secretToken", //임의로 정해주는 것
+                             process.env.SECRET_KEY, //임의로 정해주는 것
                             {expiresIn: "1h"}
                         );
 

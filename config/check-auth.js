@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 module.exports = (req, res, next) => {
     try{
         const token = req.headers.authorization.split(" ")[1];
-        const decoded =  jwt.verify(token, "secretToken");
+        const decoded =  jwt.verify(token, process.env.SECRET_KEY);
         req.userData = decoded;
         next() //다음 동작으로 넘어가게
     }

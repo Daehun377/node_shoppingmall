@@ -3,21 +3,17 @@
 const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
+const dotEnv = require("dotenv");
 
+dotEnv.config();
 
 
 const app = express(); // express 내에 있는 많은 함수들중에서 어떤 기능을 쓸것인지 . 으로 해서 불러오면 된다. why 가 아닌 how 로 접근 (개발을)
 
 
-// 커넥트 데이터 베이스
+// 데이터베이스 연결
 
-const db = "mongodb+srv://daehunkim:1650@cluster0-v8kmp.mongodb.net/shoppingmall?retryWrites=true&w=majority";
-
-mongoose.connect(db, {useNewUrlParser : true,  useUnifiedTopology: true, useCreateIndex : true})
-    .then(() => console.log("MongoDB connected"))
-    .catch(err => console.log(err.message));
-
+require("./config/database");
 
 
 
@@ -37,6 +33,6 @@ app.use("/product", productRoute);
 app.use("/order", orderRoute);
 app.use("/user", userRoute);
 
-const PORT = 3000;
+const PORT = process.env.PORT || 7000; //1순위, 2순위
 
 app.listen(PORT, console.log("server 시작됨"));
